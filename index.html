@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字小游戏</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>  
+    <style>
+        div {
+            width: 250px;
+            border: 1px solid #666;
+            margin: 30px auto;
+            border-radius: 30px;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        .correct {
+            color: red;
+            font-weight: bold;
+        }
+
+
+        .error {
+            color: black;
+        }
+
+        .hint {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>
+            <input type="text" v-model="guessed" placeholder="请输入一个数">
+        </p>
+        <p v-bind:style="resultStyle">{{ result }}</p>
+    </div>
+
+    <script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            guessed: '',
+            key: Math.round(Math.random() * 100) 
+        },
+        computed: {
+            result() {
+                const value = parseInt(this.guessed);
+
+                if (isNaN(value) || value < 1 || value > 100) {
+                    return '请输入一个1~100之间的整数';
+                } else if (value === this.key) {
+                    return '恭喜你，猜对了！';
+                } else if (value > this.key) {
+                    return "太大了，往小一点猜";
+                } else if (value < this.key) {
+                    return "太小了，往大一点猜";
+                }
+            },
+            resultStyle() {
+                const result = this.result;
+                if (result === '恭喜你，猜对了！') {
+                    return { color: 'red', fontWeight: 'bold' };
+                } else if (result === '请输入一个1~100之间的整数') {
+                    return { color: 'black' };
+                } else {
+                    return { color: 'red' };
+                }
+            }
+        }
+    });
+    </script>
+</body>
+</html>
